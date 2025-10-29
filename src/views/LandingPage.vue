@@ -16,19 +16,8 @@ const showBattle = computed(() => gameStore.currentScreen === 'battle')
 
 // Debug logging
 onMounted(() => {
-  if (import.meta.env.DEV) {
-    console.log('🎮 LandingPage mounted, current state:')
-    console.log('- hasSeenInstructions:', gameStore.hasSeenInstructions)
-    console.log('- currentScreen:', gameStore.currentScreen)
-    console.log('- hasAnyCards:', gameStore.hasAnyCards)
-    console.log('- hasCompletedTutorial:', gameStore.hasCompletedTutorial)
-  }
-
   // Fix screen logic based on saved state
   if (gameStore.hasCompletedTutorial && gameStore.currentScreen !== 'battle') {
-    if (import.meta.env.DEV) {
-      console.log('🔧 Fixing screen: tutorial completed, should be on battle')
-    }
     gameStore.setCurrentScreen('battle')
   }
 })
@@ -45,18 +34,6 @@ const handleCardsRevealed = () => {
 const handleTutorialComplete = () => {
   gameStore.setHasCompletedTutorial(true)
   gameStore.setCurrentScreen('battle')
-}
-
-const testSave = () => {
-  console.log('🧪 Testing manual save...')
-  gameStore.setHasSeenInstructions(true)
-  gameStore.setCurrentScreen('pack-selection')
-}
-
-const checkStorage = () => {
-  const raw = localStorage.getItem('cat-card-battle-state')
-  console.log('🔍 Raw localStorage:', raw)
-  alert('Check console for localStorage data')
 }
 </script>
 
