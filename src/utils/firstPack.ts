@@ -1,11 +1,11 @@
-// We purposely do NOT store this in localStorage
-// so every time you refresh, it resets — and you again get a Legendary
-let firstPackClaimed = false
+import { useGameStore } from '@/stores/gameStore'
 
 export function isFirstPackClaimed(): boolean {
-  return firstPackClaimed
+  const gameStore = useGameStore()
+  return gameStore.hasOpenedFirstPack
 }
 
 export function claimFirstPack(): void {
-  firstPackClaimed = true
+  const gameStore = useGameStore()
+  gameStore.setHasOpenedFirstPack(true)
 }

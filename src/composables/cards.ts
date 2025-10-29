@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { drawRarity, drawStats } from '@/game/stats'
 import type { CatCard, TheCatApiImage } from '@/types/game'
 import { isFirstPackClaimed, claimFirstPack } from '@/utils/firstPack'
+import { useGameStore } from '@/stores/gameStore'
 import wizardPackImage from '@/assets/images/packs/wizard_pack.png'
 import warriorPackImage from '@/assets/images/packs/warrior_pack.png'
 import ninjaPackImage from '@/assets/images/packs/ninja_pack.png'
@@ -134,6 +135,8 @@ const generateCatName = (): string => {
 }
 
 export function useCards() {
+  const gameStore = useGameStore()
+
   const fetchCatImages = async (): Promise<void> => {
     if (isFetching || hasFetched) {
       return
@@ -168,6 +171,9 @@ export function useCards() {
 
       cards.value = generate(amount)
       hasFetched = true
+
+      // Save the selected pack ID to the store
+      gameStore.setSelectedPackId(selectedPackId.value)
 
       setTimeout(() => {
         visible.value = true
@@ -238,6 +244,9 @@ export function useCards() {
     if (firstPack) {
       claimFirstPack()
     }
+
+    // Add the generated cards to the user's collection
+    gameStore.addCardsToCollection(result)
 
     return result
   }
