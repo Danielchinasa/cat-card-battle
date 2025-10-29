@@ -16,15 +16,19 @@ const showBattle = computed(() => gameStore.currentScreen === 'battle')
 
 // Debug logging
 onMounted(() => {
-  console.log('🎮 LandingPage mounted, current state:')
-  console.log('- hasSeenInstructions:', gameStore.hasSeenInstructions)
-  console.log('- currentScreen:', gameStore.currentScreen)
-  console.log('- hasAnyCards:', gameStore.hasAnyCards)
-  console.log('- hasCompletedTutorial:', gameStore.hasCompletedTutorial)
+  if (import.meta.env.DEV) {
+    console.log('🎮 LandingPage mounted, current state:')
+    console.log('- hasSeenInstructions:', gameStore.hasSeenInstructions)
+    console.log('- currentScreen:', gameStore.currentScreen)
+    console.log('- hasAnyCards:', gameStore.hasAnyCards)
+    console.log('- hasCompletedTutorial:', gameStore.hasCompletedTutorial)
+  }
 
   // Fix screen logic based on saved state
   if (gameStore.hasCompletedTutorial && gameStore.currentScreen !== 'battle') {
-    console.log('🔧 Fixing screen: tutorial completed, should be on battle')
+    if (import.meta.env.DEV) {
+      console.log('🔧 Fixing screen: tutorial completed, should be on battle')
+    }
     gameStore.setCurrentScreen('battle')
   }
 })
